@@ -1,43 +1,50 @@
 "use client";
 
-import { useActionState } from "react";
-import { revokeTokens } from "@/actions/auth";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardTitle } from "@/components/ui/card";
 import Link from "next/link";
 
 export default function HomePageContent() {
-  const [formState, action] = useActionState(revokeTokens, { success: false });
-
   return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <Card className="px-4 py-3 mt-10">
-        <CardTitle className="my-2 text-center">Choose Role</CardTitle>
-        <CardContent className="flex flex-row space-x-3 py-3">
-          <Link href="/student/register">
-            <Button variant="secondary" className="hover:bg-stone-300">
-              Client
-            </Button>
-          </Link>
-          <Link href="/coach/register">
-            <Button variant="secondary" className="hover:bg-stone-300">
-              Professional
-            </Button>
-          </Link>
-        </CardContent>
-        <CardContent className="flex flex-row space-x-3 py-3">
-          <form action={action}>
-            <Button variant="secondary" className="hover:bg-stone-300">
-              Revoke all Tokens
-            </Button>
-          </form>
-        </CardContent>
-        {formState.success && (
-          <CardContent className="bg-green-200 text-green-800 h-fit w-fit mx-auto px-auto">
-            Success
+    <div className="sm:p-20 flex flex-col items-center justify-center font-sans">
+      <header className="mb-12 text-center">
+        <h1 className="text-4xl sm:text-6xl font-bold mb-4">
+          Welcome to Dolphin
+        </h1>
+        <p className="text-lg sm:text-xl">
+          Track your sessions, tasks, and progress effortlessly
+        </p>
+      </header>
+      <div className="min-h-screen w-full max-w-md">
+        <Card className="px-6 pt-6 pb-2 text-black rounded-lg shadow-lg bg-neutral-200">
+          <CardTitle className="text-2xl font-semibold text-center mb-4">
+            Choose Your Role
+          </CardTitle>
+          <CardContent className="flex flex-col md:flex-row space-y-4 md:space-x-4 md:space-y-0 items-center justify-center">
+            <Link href="/student/register">
+              <Button
+                variant="secondary"
+                className="w-full py-3 text-lg bg-blue-700 hover:bg-blue-500 text-white rounded-lg"
+              >
+                Client
+              </Button>
+            </Link>
+            <Link href="/coach/register">
+              <Button
+                variant="secondary"
+                className="w-full py-3 text-lg bg-green-700 hover:bg-green-500 text-white rounded-lg"
+              >
+                Professional
+              </Button>
+            </Link>
           </CardContent>
-        )}
-      </Card>
+        </Card>
+      </div>
+      <footer className="mt-12 text-center">
+        <p className="text-sm">
+          &copy; {new Date().getFullYear()} Dolphin. All rights reserved.
+        </p>
+      </footer>
     </div>
   );
 }
