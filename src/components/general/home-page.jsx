@@ -1,10 +1,16 @@
 "use client";
 
+import { revokeTokens } from "@/actions/auth";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardTitle } from "@/components/ui/card";
 import Link from "next/link";
+import { useActionState } from "react";
 
 export default function HomePageContent() {
+  const [formState, action] = useActionState(revokeTokens, {
+    errors: {},
+    success: false,
+  });
   return (
     <div className="sm:p-20 flex flex-col items-center justify-center font-sans">
       <header className="mb-12 text-center">
@@ -37,6 +43,16 @@ export default function HomePageContent() {
                 Professional
               </Button>
             </Link>
+          </CardContent>
+          <CardContent className="flex flex-col md:flex-row space-y-4 md:space-x-4 md:space-y-0 items-center justify-center">
+            <form action={action}>
+              <Button
+                variant="secondary"
+                className="w-full py-3 text-lg bg-red-700 hover:bg-red-500 text-white rounded-lg"
+              >
+                Revoke Tokens (Danger)
+              </Button>
+            </form>
           </CardContent>
         </Card>
       </div>
