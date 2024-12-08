@@ -89,7 +89,7 @@ export async function connectCoachAndAreas(titles) {
     return { errors: { _form: ["An error occurred. Please try again."] } };
   }
 
-  redirect("/coach/dashboard");
+  redirect("/dashboard");
 }
 
 export async function getAreasBySearchTerm(term) {
