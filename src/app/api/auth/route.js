@@ -6,6 +6,8 @@ export function GET(request) {
   let url;
   try {
     const searchParams = request.nextUrl.searchParams;
+    console.log(searchParams.get("redirect_url"));
+    console.log(`${process.env.NEXT_PUBLIC_BASE_URL}/api/auth/callback`);
 
     const authClient = new google.auth.OAuth2(
       process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID,
