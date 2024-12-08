@@ -54,7 +54,8 @@ export default function SlotCard({ slot, user }) {
         )}
         <div className="mt-6 flex flex-row gap-4 justify-center">
           {slot.status !== SlotStatus.CANCELLED &&
-            slot.status !== SlotStatus.COMPLETED && (
+            slot.status !== SlotStatus.COMPLETED &&
+            !!slot.meetingLink && (
               <Link href={slot.meetingLink} target="_blank">
                 <Button className="hover:bg-neutral-500">Join Call</Button>
               </Link>

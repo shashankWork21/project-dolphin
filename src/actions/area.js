@@ -80,7 +80,6 @@ export async function connectCoachAndAreas(titles) {
   const remainingTitles = titles.filter(
     (title) => !areas.find((area) => area.title === title)
   );
-  console.log(remainingTitles);
   try {
     await addAreasToCoach(areas.map((area) => area.id));
     await createAreas(remainingTitles);

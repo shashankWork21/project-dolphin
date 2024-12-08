@@ -149,7 +149,7 @@ export async function getTasksFromAi(formState, formData) {
 
   const content = `Here's what happened in the session, from what the coach remembers:\n\n${description}\n\nBased on this, create a concise summary for the session as well as tasks for the student (Both one time and recurring) in this JSON format:\n\n{tasks:[{title:string,description:string}],recurringTasks:[{title:string,description:string,frequency:int}],summary:string}. For recurring tasks, the frequency needs to specify the number of milliseconds between two consecutive instances (For example, 86400000 for daily tasks). If there are no one-time tasks or recurring tasks, leave the respective arrays empty.`;
 
-  const openai = new OpenAI({ apiKey: process.env.NEXT_PUBLIC_OPENAI_API_KEY });
+  const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 
   const createEmbedding = await openai.embeddings.create({
     model: "text-embedding-3-small",
@@ -173,7 +173,6 @@ export async function getTasksFromAi(formState, formData) {
   }
 
   if (!bestMatch) {
-    console.log("Best match not found");
     const response = await openai.chat.completions.create({
       model: "gpt-4o",
       messages: [
@@ -194,8 +193,6 @@ export async function getTasksFromAi(formState, formData) {
     });
     promptId = newPrompt.id;
   } else {
-    console.log("Best match found");
-    console.log(bestMatch);
     promptId = bestMatch.id;
     rawContent = bestMatch.response;
   }
@@ -324,7 +321,5 @@ export async function getAllPrompts() {
 }
 
 export async function deleteAllTasks() {
-  // await db.prompt.deleteMany({});
   await db.task.deleteMany({});
-  console.log("done");
 }

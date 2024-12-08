@@ -16,9 +16,6 @@ export async function createComment(
   const result = createCommentSchema.safeParse({
     content: formData.get("content"),
   });
-  console.log(userId);
-  const user = await db.user.findUnique({ where: { id: userId } });
-  console.log(user);
   if (!result.success) {
     return {
       errors: result.error.flatten().fieldErrors,
@@ -50,7 +47,8 @@ export async function createComment(
     }
   }
 
-  revalidatePath("/posts/*");
+  revalidatePath("/posts");
+  revalidatePath(`/posts/${postId}`);
   return {
     errors: {},
     success: true,

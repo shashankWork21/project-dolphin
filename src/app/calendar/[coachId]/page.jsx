@@ -7,10 +7,6 @@ import { getCoachById } from "@/db/queries/coach";
 export default async function PostPage({ params }) {
   const { coachId } = await params;
   const coach = await getCoachById(coachId);
-  const prompts = await getAllPrompts();
-
-  console.log(prompts);
-
   return (
     <ProtectedRoute>
       <CoachSchedulePage coach={coach} />

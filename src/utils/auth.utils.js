@@ -6,8 +6,8 @@ import { google } from "googleapis";
 export async function validateGoogleTokens(tokens, now) {
   for (const token of tokens) {
     const authClient = new google.auth.OAuth2(
-      process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID,
-      process.env.NEXT_PUBLIC_GOOGLE_CLIENT_SECRET,
+      process.env.GOOGLE_CLIENT_ID,
+      process.env.GOOGLE_CLIENT_SECRET,
       `${process.env.NEXT_PUBLIC_BASE_URL}/api/auth/callback`
     );
     authClient.setCredentials({

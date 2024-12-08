@@ -1,5 +1,5 @@
 import { validateSession } from "@/actions/auth";
-import { completeSlots } from "@/actions/slot";
+import { addExistingEventsToCalendar, completeSlots } from "@/actions/slot";
 import { getAllPrompts } from "@/actions/tasks";
 import ProtectedRoute from "@/components/auth/protected-route";
 import CalendarPageComponent from "@/components/calendar/calendar-page";
@@ -11,15 +11,21 @@ export default async function CalendarPage() {
 
   await completeSlots(user);
 
-  const slots =
-    user.role === Role.COACH
-      ? await getSlotsByCoach(user.id)
-      : await getSlotsByStudent(user.id);
+  const isCoach = user.role === Role.COACH;
+
+  const slots = isCoach
+    ? await getSlotsByCoach(user.id)
+    : await getSlotsByStudent(user.id);
+
+  let message = null;
+  if (isCoach) {
+    message = await addExistingEventsToCalendar();
+  }
 
   return (
     <ProtectedRoute>
       <div className="text-wrap w-full">
-        <CalendarPageComponent user={user} slots={slots} />
+        <CalendarPageComponent user={user} slots={slots} message={message} />
       </div>
     </ProtectedRoute>
   );

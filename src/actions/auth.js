@@ -17,10 +17,7 @@ export async function validateSession() {
   const sessionToken = c.get("session")?.value || "";
   const now = new Date();
   try {
-    const sessionObject = jwt.verify(
-      sessionToken,
-      process.env.NEXT_PUBLIC_SESSION_SECRET
-    );
+    const sessionObject = jwt.verify(sessionToken, process.env.SESSION_SECRET);
     const session = await db.session.findUnique({
       where: { id: sessionObject.id },
       include: {
@@ -74,8 +71,8 @@ export async function deleteUsers(formState) {
   const users = await db.user.findMany({ include: { tokens: true } });
   for (const user of users) {
     const authClient = new google.auth.OAuth2(
-      process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID,
-      process.env.NEXT_PUBLIC_GOOGLE_CLIENT_SECRET,
+      process.env.GOOGLE_CLIENT_ID,
+      process.env.GOOGLE_CLIENT_SECRET,
       `${process.env.NEXT_PUBLIC_BASE_URL}/api/auth/callback`
     );
     for (const token of user.tokens) {
@@ -118,7 +115,6 @@ export async function createUserWithPassword(role, formState, formData) {
   });
 
   if (!result.success) {
-    console.log(result.error.flatten().fieldErrors);
     return {
       errors: result.error.flatten().fieldErrors,
     };
@@ -140,7 +136,7 @@ export async function createUserWithPassword(role, formState, formData) {
 
     const sessionToken = jwt.sign(
       { id: session.id },
-      process.env.NEXT_PUBLIC_SESSION_SECRET,
+      process.env.SESSION_SECRET,
       { expiresIn: "2h" }
     );
     const c = await cookies();
@@ -189,7 +185,7 @@ export async function loginUser(formState, formData) {
 
     const sessionToken = jwt.sign(
       { id: session.id },
-      process.env.NEXT_PUBLIC_SESSION_SECRET,
+      process.env.SESSION_SECRET,
       { expiresIn: "2h" }
     );
     const c = await cookies();
@@ -206,10 +202,7 @@ export async function logout() {
   try {
     const c = await cookies();
     const sessionToken = c.get("session")?.value || "";
-    const session = jwt.verify(
-      sessionToken,
-      process.env.NEXT_PUBLIC_SESSION_SECRET
-    );
+    const session = jwt.verify(sessionToken, process.env.SESSION_SECRET);
     await db.session.delete({
       where: { id: session.id },
     });
@@ -222,13 +215,10 @@ export async function logout() {
 export async function verifyCoach() {
   const c = await cookies();
   const sessionToken = c.get("session")?.value || "";
-  const sessionObj = jwt.verify(
-    sessionToken,
-    process.env.NEXT_PUBLIC_SESSION_SECRET
-  );
+  const sessionObj = jwt.verify(sessionToken, process.env.SESSION_SECRET);
   const session = await db.session.findUnique({
     where: { id: sessionObj.id },
-    include: { user: true },
+    include: { user: { include: { tokens: true } } },
   });
   const user = session.user;
   if (user.role !== Role.COACH) {
@@ -239,16 +229,11 @@ export async function verifyCoach() {
 
 export async function revokeTokens(formState, formData) {
   try {
-    const slots = await db.slot.findMany({});
-    for (const slot of slots) {
-      await cancelSlotBooking(slot.id);
-    }
-    await db.slot.deleteMany({});
     const tokens = await db.token.findMany();
     for (const token of tokens) {
       const authClient = new google.auth.OAuth2(
-        process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID,
-        process.env.NEXT_PUBLIC_GOOGLE_CLIENT_SECRET,
+        process.env.GOOGLE_CLIENT_ID,
+        process.env.GOOGLE_CLIENT_SECRET,
         `${process.env.NEXT_PUBLIC_BASE_URL}/api/auth/callback`
       );
       authClient.setCredentials({
@@ -273,10 +258,7 @@ export async function revokeTokens(formState, formData) {
 export async function modifyUserDetails(formState, formData) {
   const c = await cookies();
   const sessionToken = c.get("session")?.value || "";
-  const sessionObj = jwt.verify(
-    sessionToken,
-    process.env.NEXT_PUBLIC_SESSION_SECRET
-  );
+  const sessionObj = jwt.verify(sessionToken, process.env.SESSION_SECRET);
   const session = await db.session.findUnique({
     where: { id: sessionObj.id },
     include: { user: true },

@@ -4,8 +4,6 @@ import { db } from "@/db";
 import { revalidatePath } from "next/cache";
 
 export async function createSchedule(data, formState, formData) {
-  console.log(data);
-  console.log(formData.get("slotLength"));
   try {
     await db.schedule.create({
       data: {
@@ -29,9 +27,6 @@ export async function createSchedule(data, formState, formData) {
 }
 
 export async function updateSchedule(id, data, formState, formData) {
-  console.log(id);
-  console.log(data.holidays);
-  console.log(formData.get("slotLength"));
   try {
     await db.schedule.update({
       where: { id },

@@ -12,7 +12,6 @@ const createPostSchema = z.object({
 
 export async function createPost(areaIds, formState, formData) {
   let user;
-  console.log(formData);
   try {
     user = await verifyCoach();
   } catch (error) {

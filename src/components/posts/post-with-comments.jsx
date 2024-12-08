@@ -10,7 +10,6 @@ import { Button } from "../ui/button";
 
 export default function PostWithComments({ post }) {
   const { user } = useAuth();
-  console.log(post);
   const upvotes =
     post.reactions?.filter(
       (reaction) => reaction.reaction === ReactionType.UPVOTE

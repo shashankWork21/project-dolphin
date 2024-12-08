@@ -1,7 +1,7 @@
 "use client";
 
 import { useActionState } from "react";
-import { timeDisplay } from "@/utils/calendar.util";
+import { dateDisplay, timeDisplay } from "@/utils/calendar.util";
 import { Card, CardContent, CardHeader } from "../ui/card";
 import { createSlot } from "@/actions/slot";
 import { Button } from "../ui/button";
@@ -18,7 +18,18 @@ export default function ScheduleCall({ coach, date, student }) {
     success: false,
   });
 
-  return (
+  const existingSlot = coach.coachSlots?.find((slot) => {
+    const delta = Math.abs(slot.startTime.getTime() - endTime.getTime());
+    return delta <= 1000 * 60;
+  });
+  const condition =
+    !existingSlot &&
+    coach.schedule.daysOfWeek.includes(endTime.getDay()) &&
+    !coach.schedule.holidays
+      .map((date) => dateDisplay(date))
+      .includes(dateDisplay(endTime));
+
+  return condition ? (
     <div className="w-full h-screen">
       <h2 className="text-2xl font-bold w-full text-center my-10">
         Book a Session with {coach.firstName} {coach.lastName}
@@ -78,6 +89,10 @@ export default function ScheduleCall({ coach, date, student }) {
           </form>
         </CardContent>
       </Card>
+    </div>
+  ) : (
+    <div className="bg-neutral-100 text-neutral-600 px-20 py-8 text-3xl w-fit text-center mx-auto mt-10 font-bold">
+      Looks like there are no sessions available for this day
     </div>
   );
 }

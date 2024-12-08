@@ -74,10 +74,10 @@ model Task {
   updatedAt     DateTime       @updatedAt
   recurringTask RecurringTask? @relation
   slotId        String?
-  slot          Slot?          @relation(fields: [slotId], references: [id], onDelete: Cascade)
+  slot          Slot?          @relation(fields: [slotId], references: [id], onDelete: SetNull)
   taskStatus    TaskStatus?    @relation
   promptId      String?
-  prompts       Prompt?        @relation(fields: [promptId], references: [id], onDelete: Cascade)
+  prompts       Prompt?        @relation(fields: [promptId], references: [id], onDelete: SetNull)
 }
 
 model TaskStatus {
@@ -112,7 +112,7 @@ model Slot {
   coachId     String
   studentId   String?
   student     User?      @relation("Student to Slot mapping", fields: [studentId], references: [id], onDelete: Cascade)
-  meetingLink String
+  meetingLink String?
   createdAt   DateTime   @default(now())
   updatedAt   DateTime   @updatedAt
   status      SlotStatus @default(SCHEDULED)

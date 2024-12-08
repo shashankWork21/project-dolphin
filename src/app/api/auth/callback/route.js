@@ -21,8 +21,8 @@ export async function GET(request, response) {
   const { role, user_id: userId } = state;
 
   const authClient = new google.auth.OAuth2(
-    process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID,
-    process.env.NEXT_PUBLIC_GOOGLE_CLIENT_SECRET,
+    process.env.GOOGLE_CLIENT_ID,
+    process.env.GOOGLE_CLIENT_SECRET,
     `${process.env.NEXT_PUBLIC_BASE_URL}/api/auth/callback`
   );
 
@@ -97,7 +97,7 @@ export async function GET(request, response) {
 
     const sessionToken = jwt.sign(
       { id: session.id },
-      process.env.NEXT_PUBLIC_SESSION_SECRET,
+      process.env.SESSION_SECRET,
       { expiresIn: "2h" }
     );
     if (user) {

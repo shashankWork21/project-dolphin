@@ -6,7 +6,6 @@ import { useState } from "react";
 import CoachScheduleCard from "./coach-schedule-card";
 
 export default function CoachSchedule({ user }) {
-  console.log(user);
   const [edit, setEdit] = useState(false);
   const now = new Date();
   return !user.schedule?.id ? (
@@ -17,8 +16,8 @@ export default function CoachSchedule({ user }) {
       defaultValues={{
         daysOfWeek: [],
         slotLength: 0,
-        startTime: now,
-        endTime: now,
+        startTime: null,
+        endTime: null,
         holidays: [],
       }}
       buttonText="Create Schedule"

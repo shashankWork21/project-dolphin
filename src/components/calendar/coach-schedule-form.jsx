@@ -147,7 +147,7 @@ export default function CoachScheduleForm({
     <div className="container mx-auto flex flex-col items-center">
       <Card className="p-5 bg-neutral-200 mt-10 2xl:w-7/12 md:w-4/5 w-9/10">
         <CardHeader className="text-2xl font-bold w-full text-center">
-          Your Coaching Availability
+          Your Availability
         </CardHeader>
         <CardContent className="flex flex-col items-start justify-start bg-white p-5 mb-5 rounded-xl ">
           <p className="mb-2 text-lg font-bold w-full text-center">

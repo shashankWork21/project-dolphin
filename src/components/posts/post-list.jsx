@@ -9,7 +9,6 @@ export default function PostList({ url }) {
   useEffect(() => {
     async function fetchPostsFromServer() {
       const posts = await axios.get(url);
-      console.log(posts.data);
       setPosts(posts.data);
     }
     fetchPostsFromServer();

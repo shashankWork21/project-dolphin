@@ -48,8 +48,6 @@ export default function SearchCoach() {
     fetchCoaches();
   }, [areaIds]);
 
-  console.log(coaches);
-
   return (
     <div className="container mx-auto py-5 px-10 flex flex-col">
       <Input

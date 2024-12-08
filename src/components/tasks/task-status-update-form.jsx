@@ -22,7 +22,6 @@ export default function TaskStatusUpdateForm({ taskStatus }) {
 
   const className = classNameItem?.className || "bg-neutral-700";
   const formBg = classNameItem?.formBg || "bg-white";
-  console.log(formBg);
 
   const completeAction = recurringTaskId
     ? updateRecurringTaskStatus.bind(

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Calendar } from "../ui/calendar";
 import ScheduleCall from "./schedule-call";
 import { dateDisplay, timeDisplay } from "@/utils/calendar.util";
@@ -12,7 +12,7 @@ export default function CoachSchedulePage({ coach }) {
   const [date, setDate] = useState(now);
   const [showTimes, setShowTimes] = useState(true);
   const [availableTimes, setAvailableTimes] = useState([]);
-  const [selectedTime, setSelectedTime] = useState(null);
+  const [selectedTime, setSelectedTime] = useState(now);
 
   const handleDateSelect = (date) => {
     setDate(date);
@@ -76,7 +76,7 @@ export default function CoachSchedulePage({ coach }) {
   });
 
   const selectedDateTime = new Date(date);
-  if (selectedTime) {
+  if (selectedTime && selectedDateTime) {
     selectedDateTime.setHours(selectedTime?.getHours());
     selectedDateTime.setMinutes(selectedTime?.getMinutes());
   }

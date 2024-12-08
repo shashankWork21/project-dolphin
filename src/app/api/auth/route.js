@@ -6,12 +6,10 @@ export function GET(request) {
   let url;
   try {
     const searchParams = request.nextUrl.searchParams;
-    console.log(searchParams.get("redirect_url"));
-    console.log(`${process.env.NEXT_PUBLIC_BASE_URL}/api/auth/callback`);
 
     const authClient = new google.auth.OAuth2(
-      process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID,
-      process.env.NEXT_PUBLIC_GOOGLE_CLIENT_SECRET,
+      process.env.GOOGLE_CLIENT_ID,
+      process.env.GOOGLE_CLIENT_SECRET,
       `${process.env.NEXT_PUBLIC_BASE_URL}/api/auth/callback`
     );
     url = authClient.generateAuthUrl({

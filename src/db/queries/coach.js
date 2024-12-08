@@ -5,7 +5,6 @@ import { cache } from "react";
 import { Role } from "@prisma/client";
 
 export const getCoachesByArea = cache(async (areaIds) => {
-  console.log(areaIds);
   if (areaIds.length === 0) {
     const coaches = await db.user.findMany({
       where: { role: Role.COACH },
