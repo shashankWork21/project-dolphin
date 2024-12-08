@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import Link from "next/link";
 
 export default function CoachRegisterPage() {
-  const googleSigninUrl = `${process.env.NEXT_PUBLIC_BASE_URL}/api/auth?scope=EMAIL,PROFILE,OPENID&role=student`;
+  const googleSigninUrl = `${process.env.NEXT_PUBLIC_BASE_URL}/api/auth?scope=EMAIL,PROFILE,OPENID&role=coach&redirect_url=${process.env.NEXT_PUBLIC_BASE_URL}/coach/details`;
   return (
     <div className="h-full flex flex-col items-center justify-center">
       <RegisterForm role="coach" />
