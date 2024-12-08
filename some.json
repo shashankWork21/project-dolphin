@@ -1,0 +1,31 @@
+{
+  "id": "chatcmpl-Aa45NJj7UqaqXofCfsvUSyz3FDKXF",
+  "object": "chat.completion",
+  "created": 1733158877,
+  "model": "gpt-4o-2024-08-06",
+  "choices": [
+    {
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "```json\n{\n \"tasks\": [\n {\n \"task1\": {\n \"title\": \"Make a list of motivators\",\n \"description\": \"Reflect on and write down a list of things that truly motivate you in your personal and professional life.\"\n }\n }\n ],\n \"recurringTasks\": [\n {\n \"task1\": {\n \"title\": \"Daily Gratitude Journal\",\n \"description\": \"Each day, write down three things you are grateful for to help develop a positive mindset.\",\n \"frequency\": 86400000\n }\n }\n ],\n \"summary\": \"In today's coaching session, we discussed the importance of cultivating a positive mindset through gratitude and understanding personal motivators. The student was encouraged to practice daily gratitude and to list the things that drive them personally and professionally.\"\n}\n```",
+        "refusal": null
+      },
+      "logprobs": null,
+      "finish_reason": "stop"
+    }
+  ],
+  "usage": {
+    "prompt_tokens": 168,
+    "completion_tokens": 172,
+    "total_tokens": 340,
+    "prompt_tokens_details": { "cached_tokens": 0, "audio_tokens": 0 },
+    "completion_tokens_details": {
+      "reasoning_tokens": 0,
+      "audio_tokens": 0,
+      "accepted_prediction_tokens": 0,
+      "rejected_prediction_tokens": 0
+    }
+  },
+  "system_fingerprint": "fp_7f6be3efb0"
+}

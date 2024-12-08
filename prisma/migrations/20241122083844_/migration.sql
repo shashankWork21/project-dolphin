@@ -1,0 +1,3 @@
+-- AlterTable
+ALTER TABLE "Slot" ALTER COLUMN "description" DROP NOT NULL,
+ALTER COLUMN "title" DROP NOT NULL;

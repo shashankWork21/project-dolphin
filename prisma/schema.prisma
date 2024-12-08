@@ -1,0 +1,240 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["relationJoins"]
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum TaskStatusTag {
+  NOT_STARTED
+  IN_PROGRESS
+  COMPLETED
+  ON_HOLD
+  CANCELLED
+}
+
+enum SlotStatus {
+  OPEN
+  SCHEDULED
+  CANCELLED
+  COMPLETED
+}
+
+enum ReactionType {
+  UPVOTE
+  DOWNVOTE
+}
+
+enum Role {
+  COACH
+  STUDENT
+  ADMIN
+}
+
+enum Scope {
+  CALENDAR
+  YOUTUBE
+  EMAIL
+  PROFILE
+  OPENID
+  SHEETS
+  DOCS
+}
+
+model Area {
+  id          String   @id @default(cuid())
+  title       String
+  description String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  posts       Post[]
+  slug        String   @unique
+  coaches     User[]
+}
+
+model Task {
+  id            String         @id @default(cuid())
+  title         String
+  description   String
+  coachId       String
+  coach         User           @relation("Coach to Task mapping", fields: [coachId], references: [id], onDelete: Cascade)
+  studentId     String
+  student       User           @relation("Student to Task mapping", fields: [studentId], references: [id], onDelete: Cascade)
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+  recurringTask RecurringTask? @relation
+  slotId        String?
+  slot          Slot?          @relation(fields: [slotId], references: [id], onDelete: Cascade)
+  taskStatus    TaskStatus?    @relation
+  promptId      String?
+  prompts       Prompt?        @relation(fields: [promptId], references: [id], onDelete: Cascade)
+}
+
+model TaskStatus {
+  id              String         @id @default(cuid())
+  taskId          String?        @unique
+  task            Task?          @relation(fields: [taskId], references: [id], onDelete: Cascade)
+  recurringTaskId String?
+  recurringTask   RecurringTask? @relation(fields: [recurringTaskId], references: [id], onDelete: Cascade)
+  status          TaskStatusTag  @default(NOT_STARTED)
+  createdAt       DateTime       @default(now())
+  updatedAt       DateTime       @updatedAt
+  taskDate        DateTime?      @db.Timestamptz()
+}
+
+model RecurringTask {
+  id           String       @id @default(cuid())
+  task         Task         @relation(fields: [taskId], references: [id], onDelete: Cascade)
+  createdAt    DateTime     @default(now())
+  updatedAt    DateTime     @updatedAt
+  frequency    Int
+  taskId       String       @unique
+  taskStatuses TaskStatus[]
+  promptId     String?
+  prompt       Prompt?      @relation(fields: [promptId], references: [id], onDelete: Cascade)
+}
+
+model Slot {
+  id          String     @id @default(cuid())
+  startTime   DateTime
+  endTime     DateTime
+  coach       User       @relation("Coach to Slot mapping", fields: [coachId], references: [id], onDelete: Cascade)
+  coachId     String
+  studentId   String?
+  student     User?      @relation("Student to Slot mapping", fields: [studentId], references: [id], onDelete: Cascade)
+  meetingLink String
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+  status      SlotStatus @default(SCHEDULED)
+  title       String?
+  description String?
+  summary     String?
+  tasks       Task[]
+  eventId     String?
+}
+
+model Schedule {
+  id         String     @id @default(cuid())
+  daysOfWeek Int[]
+  slotLength Int
+  startTime  DateTime   @db.Timetz()
+  endTime    DateTime   @db.Timetz()
+  createdAt  DateTime   @default(now())
+  updatedAt  DateTime   @updatedAt
+  coachId    String     @unique
+  holidays   DateTime[] @db.Timestamptz()
+  coach      User       @relation(fields: [coachId], references: [id], onDelete: Cascade)
+}
+
+model Post {
+  id          String     @id @default(cuid())
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+  createdById String
+  title       String
+  content     String?
+  jsonContent Json?
+  createdBy   User       @relation(fields: [createdById], references: [id], onDelete: Cascade)
+  comments    Comment[]
+  reactions   Reaction[]
+  areas       Area[]
+}
+
+model Comment {
+  id           String     @id @default(cuid())
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
+  content      String
+  createdById  String
+  createdBy    User       @relation("Comment to user map", fields: [createdById], references: [id], onDelete: Cascade)
+  postId       String
+  post         Post       @relation(fields: [postId], references: [id], onDelete: Cascade)
+  parentId     String?
+  parent       Comment?   @relation("Parent to children comment map", fields: [parentId], references: [id], onDelete: Cascade)
+  children     Comment[]  @relation("Parent to children comment map")
+  approvedById String?
+  approvedBy   User?      @relation("Approved Comments to user map", fields: [approvedById], references: [id], onDelete: Cascade)
+  approved     Boolean?
+  reactions    Reaction[]
+}
+
+model Reaction {
+  id        String        @id @default(cuid())
+  createdAt DateTime      @default(now())
+  updatedAt DateTime      @updatedAt
+  postId    String?
+  post      Post?         @relation(fields: [postId], references: [id])
+  commentId String?
+  comment   Comment?      @relation(fields: [commentId], references: [id])
+  User      User?         @relation(fields: [userId], references: [id])
+  userId    String?
+  reaction  ReactionType?
+}
+
+model Token {
+  id           String   @id @default(cuid())
+  sessionId    String?
+  session      Session? @relation(fields: [sessionId], references: [id])
+  scopes       Scope[]
+  accessToken  String
+  refreshToken String?
+  userId       String
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+model Session {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  expiresAt DateTime
+  tokens    Token[]
+}
+
+model User {
+  id               String     @id @default(cuid())
+  firstName        String
+  lastName         String
+  email            String     @unique
+  phone            String?
+  createdAt        DateTime   @default(now())
+  updatedAt        DateTime   @updatedAt
+  passwordHash     String?
+  role             Role
+  coaches          User[]     @relation("Coach to student mapping")
+  students         User[]     @relation("Coach to student mapping")
+  coachTasks       Task[]     @relation("Coach to Task mapping")
+  studentTasks     Task[]     @relation("Student to Task mapping")
+  coachSlots       Slot[]     @relation("Coach to Slot mapping")
+  studentSlots     Slot[]     @relation("Student to Slot mapping")
+  posts            Post[]
+  comments         Comment[]  @relation("Comment to user map")
+  approvedComments Comment[]  @relation("Approved Comments to user map")
+  reactions        Reaction[]
+  sessions         Session[]
+  tokens           Token[]
+  areas            Area[]
+  schedule         Schedule?  @relation
+}
+
+model Prompt {
+  id             String          @id @default(cuid())
+  createdAt      DateTime        @default(now())
+  updatedAt      DateTime        @updatedAt
+  response       String
+  embedding      Float[]
+  tasks          Task[]
+  recurringTasks RecurringTask[]
+}

@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE "Schedule" ALTER COLUMN "holidays" SET DATA TYPE TIMESTAMPTZ[];
