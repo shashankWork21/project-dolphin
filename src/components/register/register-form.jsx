@@ -15,7 +15,7 @@ export default function RegisterForm({ role }) {
     if (user) {
       router.push("/dashboard");
     }
-  }, [user]);
+  }, [user, router]);
 
   const [formState, action] = useActionState(
     createUserWithPassword.bind(null, role),
