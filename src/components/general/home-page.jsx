@@ -53,6 +53,13 @@ export default function HomePageContent() {
                 Revoke Tokens (Danger)
               </Button>
             </form>
+            {formState.errors?._form && (
+              <ul className="text-red-600">
+                {formState.errors?._form?.map((item, index) => (
+                  <li key={index}>{item}</li>
+                ))}
+              </ul>
+            )}
           </CardContent>
         </Card>
       </div>

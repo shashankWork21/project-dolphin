@@ -7,6 +7,8 @@ export function GET(request) {
   try {
     const searchParams = request.nextUrl.searchParams;
 
+    console.log(searchParams.get("role"));
+
     const authClient = new google.auth.OAuth2(
       process.env.GOOGLE_CLIENT_ID,
       process.env.GOOGLE_CLIENT_SECRET,
