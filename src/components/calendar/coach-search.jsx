@@ -95,8 +95,8 @@ export default function SearchCoach() {
                     </Link>
                   </CardHeader>
                   <CardContent>
-                    <p className="text-lg">Areas of work:</p>
-                    <ul className="flex flex-col justify-start space-y-4 list-disc list-inside">
+                    <p className="text-lg mt-2">Areas of work:</p>
+                    <ul className="flex flex-col mt-2 justify-start space-y-3 list-disc list-inside">
                       {coach.areas.map((area) => {
                         return <li key={area.id}>{area.title}</li>;
                       })}

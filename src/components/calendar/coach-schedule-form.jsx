@@ -16,7 +16,7 @@ import { PencilIcon, X } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "../ui/tabs";
 import { Calendar } from "../ui/calendar";
 import { Button } from "../ui/button";
-import { addDays, set } from "date-fns";
+import { addDays } from "date-fns";
 import { Input } from "../ui/input";
 
 export default function CoachScheduleForm({
@@ -47,10 +47,10 @@ export default function CoachScheduleForm({
   const [startTime, setStartTime] = useState(defaultValues.startTime);
   const [endTime, setEndTime] = useState(defaultValues.endTime);
 
-  const startHours = startTime.getHours();
-  const startMinutes = startTime.getMinutes();
-  const endHours = endTime.getHours();
-  const endMinutes = endTime.getMinutes();
+  const startHours = startTime?.getHours() || 0;
+  const startMinutes = startTime?.getMinutes() || 0;
+  const endHours = endTime?.getHours() || 0;
+  const endMinutes = endTime?.getMinutes() || 0;
 
   const handleStartTimeChange = ({ hours, minutes }) => {
     const updatedTime = new Date();

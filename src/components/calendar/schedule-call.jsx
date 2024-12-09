@@ -7,9 +7,10 @@ import { createSlot } from "@/actions/slot";
 import { Button } from "../ui/button";
 import { Textarea } from "../ui/textarea";
 
-export default function ScheduleCall({ coach, date, student }) {
+export default function ScheduleCall({ coach, date, student, override }) {
   const startTime = date;
   const endTime = new Date(date.getTime() + coach.schedule.slotLength * 60000);
+  const now = new Date();
 
   const data = { student, coach, startTime, endTime };
 
@@ -23,6 +24,8 @@ export default function ScheduleCall({ coach, date, student }) {
     return delta <= 1000 * 60;
   });
   const condition =
+    override &&
+    Math.abs(date.getTime() - now.getTime()) > 1000 * 600 &&
     !existingSlot &&
     coach.schedule.daysOfWeek.includes(endTime.getDay()) &&
     !coach.schedule.holidays
@@ -68,7 +71,7 @@ export default function ScheduleCall({ coach, date, student }) {
             <Textarea
               name="description"
               className="bg-white"
-              placeholder="What do you want the coach to know"
+              placeholder="What do you want the professional to know?"
               rows={8}
             />
             <Button type="submit" className="w-1/2">

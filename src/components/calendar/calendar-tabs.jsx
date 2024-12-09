@@ -17,6 +17,9 @@ export default function CalendarTabs({ user, slots }) {
       new Date(slot.endTime) > new Date()
   );
 
+  const now = new Date();
+  const _9HoursLater = new Date(now.getTime() + 9 * 3600 * 1000);
+
   return (
     <Tabs
       className="w-full"

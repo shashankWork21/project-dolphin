@@ -16,8 +16,8 @@ export default function CoachSchedule({ user }) {
       defaultValues={{
         daysOfWeek: [],
         slotLength: 0,
-        startTime: null,
-        endTime: null,
+        startTime: now,
+        endTime: new Date(now.getTime() + 9 * 3600 * 1000),
         holidays: [],
       }}
       buttonText="Create Schedule"

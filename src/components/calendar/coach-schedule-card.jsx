@@ -25,7 +25,7 @@ export default function CoachScheduleCard({ user, edit, setEdit }) {
   ) : (
     <Card className="w-4/5 2xl:w-7/12 mt-10 mx-auto bg-neutral-200 px-5">
       <CardHeader className="flex flex-row justify-between rounded-t-lg">
-        <div className="text-xl mx-auto font-bold">Your Coaching Schedule</div>
+        <div className="text-xl mx-auto font-bold">Your Schedule</div>
         <PencilIcon
           className="w-6 h-6 cursor-pointer"
           onClick={() => setEdit(true)}

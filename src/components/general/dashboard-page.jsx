@@ -3,10 +3,15 @@ import { Role, TaskStatusTag } from "@prisma/client";
 import TaskList from "../tasks/task-list";
 
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "../ui/tabs";
+import StudentList from "./student-list";
+import SlotList from "../calendar/slot-list";
 
-export default function DashboardPage({ user, tasks }) {
+export default function DashboardPage({ user, tasks, slots }) {
   return (
-    <Tabs defaultValue="all" className="container mx-auto mt-5">
+    <Tabs
+      defaultValue="all"
+      className="container mx-auto mt-5 flex flex-col items-center"
+    >
       {user.role === Role.STUDENT && (
         <TabsList className="w-full">
           <TabsTrigger value="all" className="w-1/6">
@@ -26,6 +31,16 @@ export default function DashboardPage({ user, tasks }) {
           </TabsTrigger>
           <TabsTrigger value="repeating" className="w-1/6">
             Repeating Tasks
+          </TabsTrigger>
+        </TabsList>
+      )}
+      {user.role === Role.COACH && (
+        <TabsList className="w-1/2">
+          <TabsTrigger value="slots" className="w-1/2">
+            Upcoming Slots
+          </TabsTrigger>
+          <TabsTrigger value="clients" className="w-1/2">
+            Clients
           </TabsTrigger>
         </TabsList>
       )}
@@ -68,8 +83,11 @@ export default function DashboardPage({ user, tasks }) {
           )}
         />
       </TabsContent>
-      <TabsContent value="repeating">
-        <TaskList tasks={tasks.filter((task) => task.recurringTask !== null)} />
+      <TabsContent value="slots" className="w-full">
+        <SlotList slots={slots} user={user} />
+      </TabsContent>
+      <TabsContent value="clients" className="w-full">
+        <StudentList slots={slots} />
       </TabsContent>
     </Tabs>
   );

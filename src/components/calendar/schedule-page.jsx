@@ -13,6 +13,7 @@ export default function CoachSchedulePage({ coach }) {
   const [showTimes, setShowTimes] = useState(true);
   const [availableTimes, setAvailableTimes] = useState([]);
   const [selectedTime, setSelectedTime] = useState(now);
+  const [override, setOverride] = useState(false);
 
   const handleDateSelect = (date) => {
     setDate(date);
@@ -40,6 +41,7 @@ export default function CoachSchedulePage({ coach }) {
         return delta <= 1000 * 60;
       });
       const condition =
+        endTime.getTime() - now.getTime() > 1000 * 600 &&
         !existingSlot &&
         coach.schedule.daysOfWeek.includes(endTime.getDay()) &&
         !coach.schedule.holidays
@@ -55,9 +57,11 @@ export default function CoachSchedulePage({ coach }) {
       setShowTimes(false);
       setAvailableTimes([]);
       setSelectedTime(null);
+      setOverride(false);
     } else {
       setAvailableTimes(slotsForDay);
       setSelectedTime(slotsForDay[0]);
+      setOverride(true);
     }
   };
 
@@ -75,11 +79,9 @@ export default function CoachSchedulePage({ coach }) {
     );
   });
 
-  const selectedDateTime = new Date(date);
-  if (selectedTime && selectedDateTime) {
-    selectedDateTime.setHours(selectedTime?.getHours());
-    selectedDateTime.setMinutes(selectedTime?.getMinutes());
-  }
+  const selectedDateTime = !!selectedTime
+    ? new Date(selectedTime)
+    : new Date(date);
 
   return (
     <div className="grid grid-cols-10">
@@ -110,7 +112,12 @@ export default function CoachSchedulePage({ coach }) {
         )}
       </div>
       <div className="col-span-7 2xl:col-span-8">
-        <ScheduleCall coach={coach} date={selectedDateTime} student={user} />
+        <ScheduleCall
+          coach={coach}
+          date={selectedDateTime}
+          student={user}
+          override={override}
+        />
       </div>
     </div>
   );

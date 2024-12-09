@@ -38,3 +38,11 @@ export const getCoachById = cache(async (coachId) => {
 
   return coach;
 });
+
+export const getStudentById = cache(async (studentId) => {
+  const student = await db.user.findUnique({
+    where: { id: studentId },
+  });
+
+  return student;
+});
