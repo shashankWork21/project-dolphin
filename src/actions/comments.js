@@ -49,6 +49,7 @@ export async function createComment(
 
   revalidatePath("/posts");
   revalidatePath(`/posts/${postId}`);
+
   return {
     errors: {},
     success: true,

@@ -10,7 +10,6 @@ import { google } from "googleapis";
 import jwt from "jsonwebtoken";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
-import { cancelSlotBooking } from "./slot";
 
 export async function validateSession() {
   const c = await cookies();
@@ -93,11 +92,13 @@ export async function deleteUsers(formState) {
 }
 
 export async function createUserWithPassword(role, formState, formData) {
-  const email = formData.get("email");
+  const email = formData.get("email").toLowerCase();
   const password = formData.get("password");
   const confirmPassword = formData.get("confirmPassword");
   const firstName = formData.get("firstName");
   const lastName = formData.get("lastName");
+
+  const data = { email, firstName, lastName, role: roles[role] };
 
   if (password !== confirmPassword) {
     return {
@@ -121,15 +122,13 @@ export async function createUserWithPassword(role, formState, formData) {
   }
   try {
     const passwordHash = await hashPassword(password);
+    data.passwordHash = passwordHash;
+
     const user = await db.user.create({
-      data: {
-        email,
-        passwordHash,
-        firstName,
-        lastName,
-        role: roles[role],
-      },
+      data,
     });
+    const now = new Date().getTime();
+    const expiresAt = new Date(now + 2 * 3600 * 1000);
     const session = await db.session.create({
       data: { userId: user.id, expiresAt },
     });
@@ -143,14 +142,15 @@ export async function createUserWithPassword(role, formState, formData) {
     c.set("session", sessionToken, {
       secure: process.env.NODE_ENV === "production",
     });
+    return { errors: {}, success: true };
   } catch (error) {
+    console.log(error);
     return { errors: { _form: ["An error occurred. Please try again."] } };
   }
-  redirect(`/${role}/dashboard`);
 }
 
 export async function loginUser(formState, formData) {
-  const email = formData.get("email");
+  const email = formData.get("email").toLowerCase();
   const password = formData.get("password");
 
   const user = await db.user.findUnique({
@@ -192,10 +192,10 @@ export async function loginUser(formState, formData) {
     c.set("session", sessionToken, {
       secure: process.env.NODE_ENV === "production",
     });
+    return { errors: {}, success: true };
   } catch (error) {
     return { errors: { _form: ["An error occurred. Please try again."] } };
   }
-  redirect(`/dashboard`);
 }
 
 export async function logout() {
@@ -229,6 +229,8 @@ export async function verifyCoach() {
 
 export async function revokeTokens(formState, formData) {
   try {
+    const c = await cookies();
+    c.delete("session");
     const tokens = await db.token.findMany();
     for (const token of tokens) {
       const authClient = new google.auth.OAuth2(
@@ -249,6 +251,7 @@ export async function revokeTokens(formState, formData) {
     await db.user.deleteMany({});
     return { success: true };
   } catch (error) {
+    console.log(error);
     return {
       errors: { _form: ["An error occurred. Please try again."] },
       success: false,
@@ -312,4 +315,8 @@ export async function modifyUserDetails(formState, formData) {
   }
 
   return { errors: {}, success: true };
+}
+
+export async function getAllUsers() {
+  return await db.user.findMany();
 }

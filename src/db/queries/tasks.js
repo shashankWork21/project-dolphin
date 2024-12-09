@@ -42,3 +42,22 @@ export const getTasksByStudent = cache(async (studentId) => {
 
   return tasks;
 });
+export const getTasksByStudentAndCoach = cache(async (studentId, coachId) => {
+  const tasks = await db.task.findMany({
+    where: { studentId, coachId },
+    include: {
+      student: true,
+      recurringTask: {
+        include: {
+          taskStatuses: {
+            include: { recurringTask: true },
+            orderBy: { createdAt: "asc" },
+          },
+        },
+      },
+      taskStatus: true,
+    },
+  });
+
+  return tasks;
+});

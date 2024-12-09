@@ -1,12 +1,6 @@
 import { validateSession } from "@/actions/auth";
 import ProtectedRoute from "@/components/auth/protected-route";
 import DashboardPage from "@/components/general/dashboard-page";
-import {
-  getOngoingSlotsByCoach,
-  getOngoingSlotsByStudent,
-  getUpcomingSlotsByCoach,
-  getUpcomingSlotsByStudent,
-} from "@/db/queries/slot";
 import { getTasksByCoach, getTasksByStudent } from "@/db/queries/tasks";
 import { Role } from "@prisma/client";
 

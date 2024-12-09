@@ -1,6 +1,6 @@
 "use client";
 
-import { useActionState } from "react";
+import { useActionState, useEffect } from "react";
 import { loginUser } from "@/actions/auth";
 import { Input } from "@/components/ui/input";
 import { Button } from "../ui/button";
@@ -10,7 +10,14 @@ export default function LoginForm() {
   const googleSigninUrl = `${process.env.NEXT_PUBLIC_BASE_URL}/api/auth?scope=EMAIL,PROFILE,OPENID&redirect_url=${process.env.NEXT_PUBLIC_BASE_URL}/dashboard`;
   const [formState, action] = useActionState(loginUser, {
     errors: {},
+    success: false,
   });
+
+  useEffect(() => {
+    if (formState?.success) {
+      window.location.href = `${process.env.NEXT_PUBLIC_BASE_URL}/dashboard`;
+    }
+  }, [formState?.success]);
 
   return (
     <div className="w-full flex flex-col">
