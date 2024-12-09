@@ -44,7 +44,7 @@ export default function HomePageContent() {
               </Button>
             </Link>
           </CardContent>
-          <CardContent className="flex flex-col md:flex-row space-y-4 md:space-x-4 md:space-y-0 items-center justify-center">
+          {/* <CardContent className="flex flex-col md:flex-row space-y-4 md:space-x-4 md:space-y-0 items-center justify-center">
             <form action={action}>
               <Button
                 variant="secondary"
@@ -61,7 +61,7 @@ export default function HomePageContent() {
               </ul>
             )}
           </CardContent>
-        </Card>
+        </Card> */}
       </div>
       <footer className="mt-12 text-center">
         <p className="text-sm">
