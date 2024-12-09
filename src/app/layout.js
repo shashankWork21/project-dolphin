@@ -1,4 +1,4 @@
-import localFont from "next/font/local";
+import { Analytics } from "@vercel/analytics/next";
 import "./globals.css";
 import Header from "@/components/general/header";
 import Providers from "./providers";
@@ -16,6 +16,7 @@ export default function RootLayout({ children }) {
           <Header />
           {children}
         </Providers>
+        <Analytics />
       </body>
     </html>
   );
