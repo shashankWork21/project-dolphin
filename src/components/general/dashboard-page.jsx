@@ -7,9 +7,10 @@ import StudentList from "./student-list";
 import SlotList from "../calendar/slot-list";
 
 export default function DashboardPage({ user, tasks, slots }) {
+  const defaultValue = user.role === Role.STUDENT ? "all" : "slots";
   return (
     <Tabs
-      defaultValue={user.role === Role.STUDENT ? "all" : "slots"}
+      defaultValue={defaultValue}
       className="container mx-auto mt-5 flex flex-col items-center"
     >
       {user.role === Role.STUDENT && (
