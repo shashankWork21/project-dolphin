@@ -4,6 +4,7 @@ import { db } from "@/db";
 import { verifyCoach } from "./auth";
 import { z } from "zod";
 import { revalidatePath } from "next/cache";
+import { redirect } from "next/navigation";
 
 const createPostSchema = z.object({
   title: z.string().min(3),
@@ -28,9 +29,9 @@ export async function createPost(areaIds, formState, formData) {
       success: false,
     };
   }
-
+  let post;
   try {
-    const post = await db.post.create({
+    post = await db.post.create({
       data: {
         createdById: user.id,
         content: formData.get("content"),
@@ -42,7 +43,6 @@ export async function createPost(areaIds, formState, formData) {
     });
     console.log(post);
     revalidatePath("/posts");
-    return { errors: {}, success: true };
   } catch (error) {
     console.log(error);
     return {
@@ -50,6 +50,7 @@ export async function createPost(areaIds, formState, formData) {
       success: false,
     };
   }
+  redirect(`/posts/${post.id}`);
 }
 
 // Read a post
