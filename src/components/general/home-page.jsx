@@ -60,8 +60,8 @@ export default function HomePageContent() {
                 ))}
               </ul>
             )}
-          </CardContent>
-        </Card> */}
+          </CardContent>*/}
+        </Card>
       </div>
       <footer className="mt-12 text-center">
         <p className="text-sm">
