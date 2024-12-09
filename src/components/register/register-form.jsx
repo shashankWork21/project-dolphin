@@ -33,7 +33,7 @@ export default function RegisterForm({ role }) {
     } else if (location) {
       window.location.href = location;
     }
-  }, [user, router, formState?.success]);
+  }, [user, router, formState?.success, role]);
 
   return (
     <Card className="w-9/10 md:w-3/5 lg:w-1/4 mx-auto mt-10 px-5 py-2 flex flex-col bg-stone-100 border-none">
