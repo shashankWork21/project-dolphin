@@ -7,9 +7,10 @@ import { Role } from "@prisma/client";
 export const getCoachesByArea = cache(async (areaIds) => {
   if (areaIds.length === 0) {
     const coaches = await db.user.findMany({
-      where: { role: Role.COACH },
+      where: { role: Role.COACH, schedule: { isNot: null } },
       include: {
         areas: true,
+        schedule: true,
       },
     });
     return coaches;

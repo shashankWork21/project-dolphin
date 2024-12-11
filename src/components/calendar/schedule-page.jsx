@@ -85,40 +85,51 @@ export default function CoachSchedulePage({ coach }) {
 
   return (
     <div className="grid grid-cols-10">
-      <div className="col-span-3 2xl:col-span-2 h-screen border-r-2 border-neutral-200">
-        <h2 className="my-10 text-2xl font-bold w-full text-center">
-          Pick a Date
-        </h2>
-        <Calendar
-          mode="single"
-          className="rounded-md border border-neutral-300 shadow-lg w-fit mx-auto my-5 text-lg bg-neutral-200"
-          onSelect={handleDateSelect}
-          selected={date}
-        />
-        {availableTimes.length > 0 && showTimes && (
-          <div>
+      {!coach.schedule && (
+        <div className="col-span-10">
+          <div className="text-3xl font-bold px-6 py-3 bg-neutral-200 w-fit mt-10 text-neutral-500 mx-auto">
+            Coach has not set up a schedule yet
+          </div>
+        </div>
+      )}
+      {!!coach.schedule && (
+        <>
+          <div className="col-span-3 2xl:col-span-2 h-screen border-r-2 border-neutral-200">
             <h2 className="my-10 text-2xl font-bold w-full text-center">
-              Pick a Time
+              Pick a Date
             </h2>
-            <div className="flex flex-col space-y-8">{renderedTimes}</div>
+            <Calendar
+              mode="single"
+              className="rounded-md border border-neutral-300 shadow-lg w-fit mx-auto my-5 text-lg bg-neutral-200"
+              onSelect={handleDateSelect}
+              selected={date}
+            />
+            {availableTimes.length > 0 && showTimes && (
+              <div>
+                <h2 className="my-10 text-2xl font-bold w-full text-center">
+                  Pick a Time
+                </h2>
+                <div className="flex flex-col space-y-8">{renderedTimes}</div>
+              </div>
+            )}
+            {availableTimes.length === 0 && (
+              <div>
+                <h2 className="my-10 px-5 py-3 text-2xl font-bold text-center w-3/5 mx-auto bg-neutral-100 text-neutral-500">
+                  No slots available for {dateDisplay(date)}
+                </h2>
+              </div>
+            )}
           </div>
-        )}
-        {availableTimes.length === 0 && (
-          <div>
-            <h2 className="my-10 px-5 py-3 text-2xl font-bold text-center w-3/5 mx-auto bg-neutral-100 text-neutral-500">
-              No slots available for {dateDisplay(date)}
-            </h2>
+          <div className="col-span-7 2xl:col-span-8">
+            <ScheduleCall
+              coach={coach}
+              date={selectedDateTime}
+              student={user}
+              override={override}
+            />
           </div>
-        )}
-      </div>
-      <div className="col-span-7 2xl:col-span-8">
-        <ScheduleCall
-          coach={coach}
-          date={selectedDateTime}
-          student={user}
-          override={override}
-        />
-      </div>
+        </>
+      )}
     </div>
   );
 }

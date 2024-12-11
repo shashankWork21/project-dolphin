@@ -88,7 +88,7 @@ export async function connectCoachAndAreas(titles) {
     return { errors: { _form: ["An error occurred. Please try again."] } };
   }
 
-  redirect("/dashboard");
+  redirect("/coach/schedule");
 }
 
 export async function getAreasBySearchTerm(term) {
