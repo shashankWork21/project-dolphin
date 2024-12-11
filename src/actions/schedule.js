@@ -2,6 +2,7 @@
 
 import { db } from "@/db";
 import { revalidatePath } from "next/cache";
+import { redirect } from "next/navigation";
 
 export async function createSchedule(data, formState, formData) {
   try {
@@ -23,6 +24,9 @@ export async function createSchedule(data, formState, formData) {
     };
   }
   revalidatePath("/calendar");
+  if (data.redirect) {
+    redirect("/dashboard");
+  }
   return { errors: {}, success: true };
 }
 

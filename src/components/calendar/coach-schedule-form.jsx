@@ -26,6 +26,7 @@ export default function CoachScheduleForm({
   setEdit,
   buttonText,
   showCancel,
+  redirect,
 }) {
   const now = new Date();
   const [date, setDate] = useState(now);
@@ -130,6 +131,7 @@ export default function CoachScheduleForm({
     endTime,
     coachId: user.id,
     holidays: consolidatedHolidays,
+    redirect,
   });
 
   const [formState, action] = useActionState(formSubmitAction, {

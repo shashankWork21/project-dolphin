@@ -1,11 +1,13 @@
 "use client";
 import { useState } from "react";
 import CoachScheduleForm from "./coach-schedule-form";
+import { createSchedule } from "@/actions/schedule";
 
 export default function CoachScheduleInitialComponent() {
   const { user } = useAuth();
   const [edit, setEdit] = useState(false);
   const now = new Date();
+
   return (
     <CoachScheduleForm
       user={user}
@@ -20,6 +22,7 @@ export default function CoachScheduleInitialComponent() {
       }}
       buttonText="Create Schedule"
       showCancel={false}
+      redirect
     />
   );
 }
