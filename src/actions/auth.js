@@ -2,7 +2,7 @@
 
 import { db } from "@/db";
 import { validateGoogleTokens } from "@/utils/auth.utils";
-import { hashPassword } from "@/utils/password.util";
+import { hashPassword, comparePassword } from "@/utils/password.util";
 import { roles } from "@/utils/roles";
 import { createUserWithPasswordSchema, userSchema } from "@/utils/user.utils";
 import { Role } from "@prisma/client";
