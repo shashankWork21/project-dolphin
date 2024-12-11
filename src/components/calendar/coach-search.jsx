@@ -43,7 +43,6 @@ export default function SearchCoach() {
   useEffect(() => {
     const fetchCoaches = async () => {
       const coaches = await getCoachesByArea(areaIds);
-      console.log(coaches);
       setCoaches(coaches);
     };
     fetchCoaches();

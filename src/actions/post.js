@@ -41,7 +41,7 @@ export async function createPost(areaIds, formState, formData) {
         },
       },
     });
-    console.log(post);
+
     revalidatePath("/posts");
   } catch (error) {
     console.log(error);
