@@ -107,7 +107,7 @@ export async function createSlot(data, formState, formData) {
       return {
         errors: {
           _form: [
-            "Event has been created but not added to your calendar. Please contact the coach for more details",
+            `Event has been created but not added to your calendar. Please contact ${coach.firstName} ${coach.lastName} for more details`,
           ],
         },
       };

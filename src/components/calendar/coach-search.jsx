@@ -76,7 +76,7 @@ export default function SearchCoach() {
       {coaches.length > 0 && (
         <>
           <h3 className="text-2xl mt-10 font-bold w-full text-center">
-            Coaches
+            Professionals
           </h3>
           <div className="flex space-x-5 flex-wrap w-full mt-10">
             {coaches.map((coach) => {
