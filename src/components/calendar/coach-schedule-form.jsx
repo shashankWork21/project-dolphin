@@ -129,7 +129,7 @@ export default function CoachScheduleForm({
       .map((day) => day.value),
     startTime,
     endTime,
-    coachId: user.id,
+    coachId: user?.id,
     holidays: consolidatedHolidays,
     redirect,
   });

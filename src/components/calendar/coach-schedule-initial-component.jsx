@@ -2,6 +2,7 @@
 import { useState } from "react";
 import CoachScheduleForm from "./coach-schedule-form";
 import { createSchedule } from "@/actions/schedule";
+import { useAuth } from "@/context/auth-context";
 
 export default function CoachScheduleInitialComponent() {
   const { user } = useAuth();
