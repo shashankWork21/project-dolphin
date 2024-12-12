@@ -41,7 +41,7 @@ export default function CoachSchedulePage({ coach }) {
         return delta <= 1000 * 60;
       });
       const condition =
-        endTime.getTime() - now.getTime() > 1000 * 600 &&
+        // endTime.getTime() - now.getTime() > 1000 * 600 &&
         !existingSlot &&
         coach.schedule.daysOfWeek.includes(endTime.getDay()) &&
         !coach.schedule.holidays
