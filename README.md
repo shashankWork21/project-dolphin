@@ -37,7 +37,7 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/bui
 
 ## Environment variables:
 
-For this project to work as intended, with full functionality as of 12th December 2024, you will need to set up the following environment variables:
+For this project to work as intended, with full functionality as of 13th December 2024, you will need to set up the following environment variables:
 
 `DATABASE_URL="Your postgres url"`
 
